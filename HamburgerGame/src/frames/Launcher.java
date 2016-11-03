@@ -1,4 +1,4 @@
-package component;
+package frames;
 
 public class Launcher {
 	
@@ -7,3 +7,4 @@ public class Launcher {
 		frame.setVisible(true);
 	}
 }
+

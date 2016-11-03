@@ -1,5 +1,6 @@
 package constants;
 
+
 public class Constants {
 	public final static String MAINFRAME_TITLE = "버거쿡";
 	// MainFrame enum 상수타입
@@ -14,7 +15,7 @@ public class Constants {
 	// StartPanel enum 상수타입
 	public static enum EStartPanel {
 		X(0), Y(0), W(700), H(700), drawX(230), drawX1(440), drawY(680), drawY1(680), Font(60), 
-		background("rsc/start_page.gif");
+		background("rsc/panelImg/start_page.gif");
 		private int value;
 		private String backgroundName;
 		private EStartPanel(int value) {
@@ -26,91 +27,25 @@ public class Constants {
 		public int getValue() { return this.value; }
 		public String getBackgroundName() { return this.backgroundName; }
 	}
-	// 햄버거 좌표 위치 enum 상수 타입
-	public static enum ERandomLocation {
-		vegetable(0,150),patty(35,150),topping(0,120),topBread(0,90),drink(240,150),bottomBread(5, 150);
+
+	public static enum EEndPanelButton {
+		Replay("rsc/panelImg/Replay.gif",100, 500, 200, 85), Quit("rsc/panelImg/Quit.gif",400, 500, 200, 85);
+		private String buttonImg;
 		private int x;
 		private int y;
-		private ERandomLocation(int x, int y){
+		private int w;
+		private int h;
+		private EEndPanelButton(String buttonImg,int x, int y,int w, int h){
+			this.buttonImg = buttonImg;
 			this.x = x;
 			this.y = y;
+			this.w = w;
+			this.h = h;
 		}
+		public String getButtonImg() { return this.buttonImg; }
 		public int getX() { return this.x; }
 		public int getY() { return this.y; }
-	} 
-	// 랜덤 야채 이미지 enum 상수 타입
-	public static enum EVegetable {
-		vegetable0("rsc/random/vegetable/cucumber.gif"),
-		vegetable1("rsc/random/vegetable/lettuce.gif"),
-		vegetable2("rsc/random/vegetable/onion.gif"),
-		vegetable3("rsc/random/vegetable/paprika.gif");
-		
-		private String img;
-		private EVegetable(String img){
-			this.img = img;
-		}
-		public String getImg() { return this.img; }
-	}
-	// 랜덤 패티 이미지 enum 상수 타입
-	public static enum EPatty {
-		patty0("rsc/random/patty/curryPatty.gif"),
-		patty1("rsc/random/patty/hanwooPatty.gif"),
-		patty2("rsc/random/patty/meatPatty.gif"),
-		patty3("rsc/random/patty/spicyPatty.gif");
-		
-		private String img;
-		private EPatty(String img){
-			this.img = img;
-		}
-		public String getImg() { return this.img; }
-	}
-	// 랜덤 토핑 이미지 enum 상수 타입
-	public static enum ETopping{
-		topping0("rsc/random/topping/cheese.gif"),
-		topping1("rsc/random/topping/egg.gif"),
-		topping2("rsc/random/topping/mushroom.gif"),
-		topping3("rsc/random/topping/tomato.gif");
-		
-		private String img;
-		private ETopping(String img){
-			this.img = img;
-		}
-		public String getImg() { return this.img; }
-	}
-	// 랜덤 위에빵 이미지 enum 상수 타입
-	public static enum ETopBread{
-		topbread0("rsc/random/topbread/topbread1.gif"),
-		topbread1("rsc/random/topbread/topbread2.gif"),
-		topbread2("rsc/random/topbread/topbread3.gif"),
-		topbread3("rsc/random/topbread/topbread4.gif");
-		
-		private String img;
-		private ETopBread(String img){
-			this.img = img;
-		}
-		public String getImg() { return this.img; }
-	}
-	// 랜덤 음료수 이미지 enum 상수 타입
-	public static enum EDrink{
-		drink0("rsc/random/drink/drinkCider.gif"),
-		drink1("rsc/random/drink/drinkCola.gif"),
-		drink2("rsc/random/drink/drinkFanta.gif"),
-		drink3("rsc/random/drink/drinkGrape.gif");
-		
-		private String img;
-		private EDrink(String img){
-			this.img = img;
-		}
-		public String getImg() { return this.img; }
-	}
-	// 랜덤 아래빵 이미지 enum 상수 타입
-	public static enum EBottomBread{
-		bottomBread("rsc/random/bottomBread.gif");
-		
-		private String img;
-		private EBottomBread(String img){
-			this.img = img;
-		}
-		public String getImg() { return this.img; }
+		public int getW() { return this.w; }
+		public int getH() { return this.h; }
 	}
 }

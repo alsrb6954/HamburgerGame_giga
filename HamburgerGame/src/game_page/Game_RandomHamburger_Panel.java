@@ -1,30 +1,31 @@
 
 package game_page;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import constants.Constants_RandomPanel.EGameRandomHamburger;
 import hamburger.*;
 
-public class Game_RandomHamburger_Panel extends JPanel {
+public class Game_RandomHamburger_Panel extends Game_Panel_Piece {
 	private static final long serialVersionUID = 1L;
 	private JLabel material;
 	private Material currentMaterial;
 
-	 ImageIcon icon = new ImageIcon("rsc/버거쿡배경-3.gif");
-	 public void paintComponent(Graphics g) {
-	 Dimension d = getSize();
-	 g.drawImage(icon.getImage(), 0, 0, d.width, d.height, null);
-	 setOpaque(false);//그림을 표시하게 설정,투명하게 조절
-	 super.paintComponent(g);
+	public Game_RandomHamburger_Panel(ImageIcon icon){
+		super(icon);
 	}
-	public Game_RandomHamburger_Panel() {
-		this.setLayout(null);
-		this.makeHamburger();
+	// 이전의 그려있는것이 있으면 지우고 다시 그려준다.
+	public void initialize() {
+		this.removeAll();
+		for(EGameRandomHamburger eGameRandomHamburger : EGameRandomHamburger.values()){
+			currentMaterial = eGameRandomHamburger.getMaterial();
+			currentMaterial.initMaterial(randomProduct(), 0);
+			material = currentMaterial.getMaterial();
+			this.add(material);
+		}
 	}
 
 	// 0~3까지의 숫자 랜덤 생성 메소드
@@ -32,38 +33,6 @@ public class Game_RandomHamburger_Panel extends JPanel {
 		Random random = new Random();
 		return random.nextInt(4);
 	}
-
-	public void makeHamburger() {
-		// 위에빵
-		currentMaterial = new TopBread();
-		currentMaterial.initMaterial(randomProduct(), 0);
-		material = currentMaterial.getMaterial();
-		this.add(material);
-		// 토핑
-		currentMaterial = new Topping();
-		currentMaterial.initMaterial(randomProduct(), 0);
-		material = currentMaterial.getMaterial();
-		this.add(material);
-		// 패티
-		currentMaterial = new Patty();
-		currentMaterial.initMaterial(randomProduct(), 0);
-		material = currentMaterial.getMaterial();
-		this.add(material);
-		// 야채
-		currentMaterial = new Vegetable();
-		currentMaterial.initMaterial(randomProduct(), 0);
-		material = currentMaterial.getMaterial();
-		this.add(material);
-		// 아래빵
-		currentMaterial = new BottomBread();
-		currentMaterial.initMaterial(0,0);
-		material = currentMaterial.getMaterial();
-		this.add(material);
-		// 음료수
-		currentMaterial = new Drink();
-		currentMaterial.initMaterial(randomProduct(), 0);
-		material = currentMaterial.getMaterial();
-		this.add(material);
-	}
-
+	@Override
+	public void selectBurger(int q, int i) {}
 }

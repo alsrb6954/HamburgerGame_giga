@@ -3,8 +3,8 @@ package hamburger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import constants.Constants.EBottomBread;
-import constants.Constants.ERandomLocation;
+import constants.Constants_buger.EBottomBread;
+import constants.Constants_buger.ERandomLocation;
 
 public class BottomBread extends Material {
 	private JLabel bottomBread;
@@ -22,5 +22,4 @@ public class BottomBread extends Material {
 	public JLabel getMaterial() {
 		return bottomBread;
 	}
-
 }

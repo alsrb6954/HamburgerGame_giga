@@ -3,14 +3,16 @@ package hamburger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import component.ConfirmStack;
-import constants.Constants.EPatty;
-import constants.Constants.ERandomLocation;
+import constants.Constants_buger.EPatty;
+import constants.Constants_buger.ERandomLocation;
+import data_managements.ConfirmQueue;
+import data_managements.ConfirmStack;
 
 public class Patty extends Material {
 	private JLabel patty;
 	private ImageIcon image;
-	ConfirmStack stack = new ConfirmStack();
+	private ConfirmStack stack = new ConfirmStack();
+	private ConfirmQueue queue = new ConfirmQueue();
 
 	@Override
 	public void initMaterial(int i, int n) {
@@ -21,7 +23,14 @@ public class Patty extends Material {
 		}
 		patty.setBounds(ERandomLocation.patty.getX(), ERandomLocation.patty.getY(), image.getIconWidth(),
 				image.getIconHeight());
-		stack.push(i, n);
+		switch (n) {
+		case 0:stack.push(i);
+			break;
+		case 1:queue.enqueue(i);
+			break;
+		default:
+			break;
+		}
 	}
 
 	public JLabel getMaterial() {

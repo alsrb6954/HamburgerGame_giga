@@ -1,37 +1,35 @@
 package game_page;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-import hamburger.BottomBread;
+import constants.Constants_SelectPanel_Burger.EGameSelectHamburger;
 import hamburger.Material;
 
-public class Game_SelectHamburger_Panel extends JPanel {
+public class Game_SelectHamburger_Panel extends Game_Panel_Piece {
 	private static final long serialVersionUID = 1L;
-	private JLabel material;
+	private JLabel material[];
 	private Material currentMaterial;
-	
-	 ImageIcon icon = new ImageIcon("rsc/버거쿡배경-3.gif");
-	 public void paintComponent(Graphics g) {
-	 Dimension d = getSize();
-	 g.drawImage(icon.getImage(), 0, 0, d.width, d.height, null);
-	 setOpaque(false);//그림을 표시하게 설정,투명하게 조절
-	 super.paintComponent(g);
+	public Game_SelectHamburger_Panel(ImageIcon icon) {
+		super(icon);
+		material = new JLabel[6];
 	}
-	
-	public Game_SelectHamburger_Panel() {
-		
-		this.setLayout(null);
-		
-		
+	// 이전의 그려있는것이 있으면 지우고 다시 그려준다.
+	public void initialize(){
+		this.removeAll();
 		// 아래빵 생성 
-		currentMaterial = new BottomBread();
+		currentMaterial = EGameSelectHamburger.values()[0].getMaterial();
 		currentMaterial.initMaterial(0, 1);
-		material = currentMaterial.getMaterial();
-		this.add(material);
+		material[0] = currentMaterial.getMaterial();
+		this.add(material[0]);
 	}
+	// 선택된 재료에 따라 햄버거 모양을 그려주는 메소드
+	public void selectBurger(int q, int i){
+		this.removeAll();
+		currentMaterial = EGameSelectHamburger.values()[q].getMaterial();
+		currentMaterial.initMaterial(i, 1);
+		material[q] = currentMaterial.getMaterial();
+		for(;q>=0;q--){ this.add(material[q]); }
+	}
+
 }
