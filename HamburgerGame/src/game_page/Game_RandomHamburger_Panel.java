@@ -1,6 +1,8 @@
 package game_page;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -9,12 +11,16 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import constants.Constants;
 import constants.Constants.*;
+import hamburger.*;
 
 public class Game_RandomHamburger_Panel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JLabel topBread, topping, patty, vegetable, underBread, drink;
+	private JLabel bottomBread;
+	JLabel material;
 	private ImageIcon image;
+	
 	
 //	ImageIcon icon = new ImageIcon("rsc/시작페이지(햄버거.gif");
 //	public void paintComponent(Graphics g) {
@@ -24,7 +30,6 @@ public class Game_RandomHamburger_Panel extends JPanel {
 //        super.paintComponent(g);
 //	 }
 	public Game_RandomHamburger_Panel() {
-		
 		TitledBorder line = new TitledBorder(new LineBorder(Color.black), "랜덤햄버거");
 		line.setTitleColor(Color.red);
 		this.setBorder(line);
@@ -38,76 +43,35 @@ public class Game_RandomHamburger_Panel extends JPanel {
 		return random.nextInt(4);
 	}
 	public void makeHamburger(){
-		this.topBread();
-		this.topping();
-		this.patty();
-		this.vegetable();
+		// 위에빵
+		TopBread topBread = new TopBread(randomProduct());
+		material = topBread.getMaterial();
+		this.add(material);
+		// 토핑
+		Topping topping = new Topping(randomProduct());
+		material = topping.getMaterial();
+		this.add(material);
+		// 패티
+		Patty patty = new Patty(randomProduct());
+		material = patty.getMaterial();
+		this.add(material);
+		// 야채
+		Vegetable vegetable = new Vegetable(randomProduct());
+		material = vegetable.getMaterial();
+		this.add(material);
+		// 아래빵
 		this.underBread();
-		this.drink();
+		// 음료수
+		Drink drink = new Drink(randomProduct());
+		material = drink.getMaterial();
+		this.add(material);
 	}
 
 	// 밑빵 메소드
 	public void underBread() {
 		image = new ImageIcon("rsc/random/bottomBread.gif");
-		underBread = new JLabel(image);
-		underBread.setBounds(5, 150, image.getIconWidth(), image.getIconHeight());
-		add(underBread);
-	}
-	
-	public void vegetable() {
-		int i = randomProduct();
-		EVegetable[] eVegetable = EVegetable.values();
-		for(int j = 0 ;j <= i ; j++){
-			image = new ImageIcon(eVegetable[j].getImg());
-			vegetable = new JLabel(image);
-			vegetable.setBounds(EVegetable.location.getX(), EVegetable.location.getY(), image.getIconWidth(), image.getIconHeight());	
-		}
-		add(vegetable);
-	}
-
-	// 패티 메소드
-	public void patty() {
-		int i = randomProduct();
-		EPatty[] ePatty = EPatty.values();
-		for(int j = 0 ; j<=i ; j++){
-			image = new ImageIcon(ePatty[j].getImg());
-			patty = new JLabel(image);
-			patty.setBounds(EPatty.location.getX(), EPatty.location.getY(), image.getIconWidth(), image.getIconHeight());	
-		}
-		add(patty);
-	}
-
-	// 토핑 선택 메소드
-	public void topping() {
-		int i = randomProduct();
-		ETopping[] eTopping = ETopping.values();
-		for(int j = 0 ; j <= i ; j++){
-			image = new ImageIcon(eTopping[j].getImg());
-			topping = new JLabel(image);
-			topping.setBounds(ETopping.location.getX(), ETopping.location.getY(), image.getIconWidth(), image.getIconHeight());	
-		}
-		add(topping);
-	}
-	// 위에 빵 선택 메소드
-	public void topBread() {
-		int i = randomProduct();
-		ETopBread[] eTopBread = ETopBread.values();
-		for(int j = 0 ; j<=i ; j++){
-			image = new ImageIcon(eTopBread[j].getImg());
-			topBread = new JLabel(image);
-			topBread.setBounds(ETopBread.location.getX(), ETopBread.location.getY(), image.getIconWidth(), image.getIconHeight());	
-		}
-		add(topBread);
-	}
-	// 음료 선택
-	public void drink() {
-		int i = randomProduct();
-		EDrink[] eDrink = EDrink.values();
-		for(int j = 0 ; j<=i ; j++){
-			image = new ImageIcon(eDrink[j].getImg());
-			drink = new JLabel(image);
-			drink.setBounds(EDrink.location.getX(), EDrink.location.getY(), image.getIconWidth(), image.getIconHeight());	
-		}
-		add(drink);
+		bottomBread = new JLabel(image);
+		bottomBread.setBounds(5, 150, image.getIconWidth(), image.getIconHeight());
+		add(bottomBread);
 	}
 }
