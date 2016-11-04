@@ -42,4 +42,23 @@ public class ViewController {
 		mainFrame.setVisible(false); //메인프레임을 보이지 않게한 후 
 		mainFrame.setVisible(true); //다시 보이게 한다.
 	}
+	public void keepGamePanel(){
+		contentPane.remove(gamePanel); //gamePanel을 제거한다
+		contentPane.add(gamePanel); //새로운 gameEndPanel을 추가한다.
+		gamePanel.keep();
+		show();
+	}
+	
+	public void replayGamePanel(){
+		gamePanel.replay();
+		contentPane.remove(gamePanel); //startPanel을 제거한다
+		gamePanel = new Game_Panel(this);
+		contentPane.add(gamePanel); //새로운 gamePanel을 추가한다.
+		gamePanel.initialize(); // 게임패널을 초기화 시켜준다.
+		show();
+	}
+	public void show(){
+		mainFrame.setVisible(false); //메인프레임을 보이지 않게한 후 
+		mainFrame.setVisible(true); //다시 보이게 한다.
+	}
 }

@@ -23,4 +23,8 @@ public class Game_Check_Hamburger {
 		queue.initialize();
 		return 0;
 	}
+	public void initialize(){
+		stack.initialize();
+		queue.initialize();
+	}
 }

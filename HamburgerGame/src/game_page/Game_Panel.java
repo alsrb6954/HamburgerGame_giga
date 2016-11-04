@@ -29,7 +29,8 @@ public class Game_Panel extends JPanel {
 	private ButtonActionListner actionHandler = new ButtonActionListner();
 	private ViewController viewController;
 	private int score;
-	
+	private JButton button;
+	private Pause_Panel pause;
 	// 게임 메인 패널의 배경 이미지와 점수 부분을 그려주는 메소드
 	public void paintComponent(Graphics g) {
 		// 배경 부분
@@ -49,6 +50,7 @@ public class Game_Panel extends JPanel {
 		this.viewController = viewController;
 		this.setLayout(null); // 레이아웃을 null로 선언 하면서 자유로운 위치에 만들어지도록 한다.	
 		for(int i=1; i<=5; i++){ queue.enqueue(i); } // 원형큐로 재료를 순차적으로 넘기기 위해 사용
+		pause = new Pause_Panel(viewController);
 		// 레벨 부분
 		levelLable = new Game_LevelTest();
 		levelLable.initialize();
@@ -56,7 +58,7 @@ public class Game_Panel extends JPanel {
 		// 버튼 추가하는 곳
 		for(EGamePanelButton eGamePanelButton: EGamePanelButton.values()){
 			ImageIcon img = new ImageIcon(eGamePanelButton.getButtonImg());
-			JButton button = new JButton();
+			button = new JButton();
 			button.setIcon(img);
 			//button.setPressedIcon(img);
 			button.addActionListener(actionHandler);
@@ -90,6 +92,16 @@ public class Game_Panel extends JPanel {
 		for (int i = 0; i < 3; i++) {
 			current_Panel[i].initialize();
 		}
+	}
+	public void keep() {
+		arrowThread.resume();
+		remove(pause);
+		button.setEnabled(true);
+	}
+	public void replay() {
+		arrowThread.resume();
+		checkHamburger.initialize();
+		button.setEnabled(true);
 	}
 	// 다음 재료로 넘기는 메소드
 	@SuppressWarnings("deprecation")
@@ -147,7 +159,14 @@ public class Game_Panel extends JPanel {
 				nextMaterial(i);
 				queue.enqueue(i);
 			} else if (e.getActionCommand().equals("stop")){
-					
+				arrowThread.suspend();
+				button.setEnabled(false);
+				pause.setBounds(50, 50, 600, 500);
+				add(pause);
+				add(current_Panel[0]);
+				add(current_Panel[1]);
+				add(current_Panel[2]);
+				add(arrowPanel);
 			}
 			repaint();
 		}
