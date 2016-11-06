@@ -29,20 +29,24 @@ public class Constants {
 	}
 
 	public static enum EEndPanelButton {
-		Replay("rsc/panelImg/Replay.gif",100, 500, 200, 85), Quit("rsc/panelImg/Quit.gif",400, 500, 200, 85);
+		Replay("rsc/panelImg/Replay.gif","rsc/panelImg/Replay_push.gif",100, 500, 200, 85), 
+		Quit("rsc/panelImg/Quit.gif","rsc/panelImg/Quit_push.gif",400, 500, 200, 85);
 		private String buttonImg;
+		private String buttonImg2;
 		private int x;
 		private int y;
 		private int w;
 		private int h;
-		private EEndPanelButton(String buttonImg,int x, int y,int w, int h){
+		private EEndPanelButton(String buttonImg,String buttonImg2,int x, int y,int w, int h){
 			this.buttonImg = buttonImg;
+			this.buttonImg2 = buttonImg2;
 			this.x = x;
 			this.y = y;
 			this.w = w;
 			this.h = h;
 		}
 		public String getButtonImg() { return this.buttonImg; }
+		public String getButtonImg2() { return this.buttonImg2; }
 		public int getX() { return this.x; }
 		public int getY() { return this.y; }
 		public int getW() { return this.w; }

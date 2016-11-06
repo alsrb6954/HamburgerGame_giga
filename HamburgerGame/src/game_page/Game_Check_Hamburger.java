@@ -11,9 +11,8 @@ public class Game_Check_Hamburger {
 		for (int i = 0; i < 5; i++) {
 			int s = stack.pop();
 			int q = queue.dequeue();
-			if (s == q) {
-				continue;
-			} else {
+			if (s == q) {continue;}
+			else {
 				stack.initialize();
 				queue.initialize();
 				return 1;

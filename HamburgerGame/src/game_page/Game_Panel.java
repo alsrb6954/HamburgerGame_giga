@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import constants.Constants_GamePanel;
@@ -21,6 +20,7 @@ import thread.*;
 public class Game_Panel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Game_Panel_Piece current_Panel[];
+	private Game_Pause_Panel pause;
 	private Game_LevelTest levelLable;
 	private Game_Check_Hamburger checkHamburger = new Game_Check_Hamburger();
 	private MaterialQueue queue = new MaterialQueue();
@@ -30,7 +30,6 @@ public class Game_Panel extends JPanel {
 	private ViewController viewController;
 	private int score;
 	private JButton button;
-	private Pause_Panel pause;
 	// 게임 메인 패널의 배경 이미지와 점수 부분을 그려주는 메소드
 	public void paintComponent(Graphics g) {
 		// 배경 부분
@@ -50,7 +49,6 @@ public class Game_Panel extends JPanel {
 		this.viewController = viewController;
 		this.setLayout(null); // 레이아웃을 null로 선언 하면서 자유로운 위치에 만들어지도록 한다.	
 		for(int i=1; i<=5; i++){ queue.enqueue(i); } // 원형큐로 재료를 순차적으로 넘기기 위해 사용
-		pause = new Pause_Panel(viewController);
 		// 레벨 부분
 		levelLable = new Game_LevelTest();
 		levelLable.initialize();
@@ -58,9 +56,11 @@ public class Game_Panel extends JPanel {
 		// 버튼 추가하는 곳
 		for(EGamePanelButton eGamePanelButton: EGamePanelButton.values()){
 			ImageIcon img = new ImageIcon(eGamePanelButton.getButtonImg());
+			ImageIcon img2 = new ImageIcon(eGamePanelButton.getButtonImg2());
 			button = new JButton();
 			button.setIcon(img);
-			//button.setPressedIcon(img);
+			button.setRolloverIcon(img2);
+			button.setPressedIcon(img2);
 			button.addActionListener(actionHandler);
 			button.setActionCommand(eGamePanelButton.toString());
 			button.setBounds(eGamePanelButton.getX(), eGamePanelButton.getY(), eGamePanelButton.getW(),
@@ -71,12 +71,13 @@ public class Game_Panel extends JPanel {
 		// 화살표 만드는 부분
 		arrowPanel = new Arrow_Panel();
 		arrowThread = new Arrow_Thread(arrowPanel);
-		arrowPanel.setBounds(45, 590, 600, 50);
+		arrowPanel.setBounds(45, 560, 600, 60);
 		add(arrowPanel);
 		arrowThread.start();
 		
 		// 랜덤햄버거 패널, 선택햄버거 패널, 재료 선택 패널
 		int i = 0;
+		pause = new Game_Pause_Panel(viewController);
 		current_Panel = new Game_Panel_Piece[3];
 		for (EGamePanelPiece eGamePanelPiece : EGamePanelPiece.values()) {
 			current_Panel[i] = eGamePanelPiece.getGamePiece();
@@ -89,15 +90,15 @@ public class Game_Panel extends JPanel {
 
 	// 게임을 초기 설정 해주는 메소드
 	public void initialize() {	
-		for (int i = 0; i < 3; i++) {
-			current_Panel[i].initialize();
-		}
+		for (int i = 0; i < 3; i++) {current_Panel[i].initialize();}
 	}
+	@SuppressWarnings("deprecation")
 	public void keep() {
 		arrowThread.resume();
 		remove(pause);
 		button.setEnabled(true);
 	}
+	@SuppressWarnings("deprecation")
 	public void replay() {
 		arrowThread.resume();
 		checkHamburger.initialize();
@@ -127,10 +128,6 @@ public class Game_Panel extends JPanel {
 			}
 			// 버거 모양이 다를경우
 			else if(a == 1){ 
-//				ImageIcon icon = new ImageIcon("rsc/panelImg/SelectPanel1.gif");
-//				JLabel la1 = new JLabel(icon);
-//				la1.setBounds(0, 10, icon.getIconWidth(), icon.getIconHeight());
-//				add(la1);
 				viewController.endGamePanel();
 			}
 		}
@@ -145,28 +142,29 @@ public class Game_Panel extends JPanel {
 		else if(num<440){ current_Panel[1].selectBurger(i, 2); } 
 		else{ current_Panel[1].selectBurger(i, 3); }
 	}
-	
+	public void stopGame(){
+		arrowThread.suspend();
+		button.setEnabled(false);
+		add(pause);
+		add(arrowPanel);
+		add(current_Panel[0]);
+		add(current_Panel[1]);
+		add(current_Panel[2]);
+	}
 	private class ButtonActionListner implements ActionListener{
 		int i;
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// next 눌렀을떄
-			if(e.getActionCommand().equals("next")){
+			if(e.getActionCommand().equals(EGamePanelButton.values()[1].toString())){
 				i = queue.dequeue();
 				toSelecedMaterial(i);
 				try { Thread.sleep(200); } 
 				catch (InterruptedException e1) { e1.printStackTrace(); }
 				nextMaterial(i);
 				queue.enqueue(i);
-			} else if (e.getActionCommand().equals("stop")){
-				arrowThread.suspend();
-				button.setEnabled(false);
-				pause.setBounds(50, 50, 600, 500);
-				add(pause);
-				add(current_Panel[0]);
-				add(current_Panel[1]);
-				add(current_Panel[2]);
-				add(arrowPanel);
+			} else if (e.getActionCommand().equals(EGamePanelButton.values()[0].toString())){
+				stopGame();
 			}
 			repaint();
 		}

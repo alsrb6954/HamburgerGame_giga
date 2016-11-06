@@ -33,20 +33,24 @@ public class Constants_GamePanel {
 	}
 	
 	public static enum EGamePanelButton {
-		stop("rsc/panelImg/Stop.gif",10, 10, 50, 50),next("rsc/panelImg/Next.gif",300, 640, 100, 50);
+		stop("rsc/panelImg/Stop.gif","rsc/panelImg/Stop_push.gif",10, 10, 50, 50),
+		next("rsc/panelImg/Next.gif","rsc/panelImg/Next_push.gif",300, 640, 100, 50);
 		private String buttonImg;
+		private String buttonImg2;
 		private int x;
 		private int y;
 		private int w;
 		private int h;
-		private EGamePanelButton(String buttonImg,int x, int y,int w, int h){
+		private EGamePanelButton(String buttonImg,String buttonImg2, int x, int y,int w, int h){
 			this.buttonImg = buttonImg;
+			this.buttonImg2 = buttonImg2;
 			this.x = x;
 			this.y = y;
 			this.w = w;
 			this.h = h;
 		}
 		public String getButtonImg() { return this.buttonImg; }
+		public String getButtonImg2() { return this.buttonImg2; }
 		public int getX() { return this.x; }
 		public int getY() { return this.y; }
 		public int getW() { return this.w; }

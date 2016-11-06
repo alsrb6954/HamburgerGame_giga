@@ -25,9 +25,11 @@ public class End_Panel extends Assistance_Panel{
 		
 		for(EEndPanelButton eEndPanelButton: EEndPanelButton.values()){
 			ImageIcon img = new ImageIcon(eEndPanelButton.getButtonImg());
+			ImageIcon img2 = new ImageIcon(eEndPanelButton.getButtonImg2());
 			JButton button = new JButton();
 			button.setIcon(img);
-			//button.setPressedIcon(img);
+			button.setRolloverIcon(img2);
+			button.setPressedIcon(img2);
 			button.addActionListener(actionHandler);
 			button.setActionCommand(eEndPanelButton.toString());
 			button.setBounds(eEndPanelButton.getX(), eEndPanelButton.getY(), eEndPanelButton.getW(),
