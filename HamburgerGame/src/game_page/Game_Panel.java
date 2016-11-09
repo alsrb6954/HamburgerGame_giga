@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -16,7 +18,7 @@ import constants.Constants_GamePanel.*;
 import data_managements.MaterialQueue;
 import frames.ViewController;
 import thread.*;
-
+// 메인 게임 패널로 게임을 하는 클래스
 public class Game_Panel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Game_Panel_Piece current_Panel[];
@@ -30,10 +32,16 @@ public class Game_Panel extends JPanel {
 	private ViewController viewController;
 	private int score;
 	private JButton button;
+	// 배경을 이미지로 입히고 일시정지했으면 바꾸기 위한 변수등
+	private ImageIcon icon = new ImageIcon(Constants_GamePanel.BACKGROUND_GAMEPANEL); 
+	private Image normalImage = icon.getImage();
+	private Image grayImage = GrayFilter.createDisabledImage(normalImage);
+	private ImageIcon icon2 = new ImageIcon(grayImage);
+	private ImageIcon icon1 = icon;
+	
 	// 게임 메인 패널의 배경 이미지와 점수 부분을 그려주는 메소드
 	public void paintComponent(Graphics g) {
 		// 배경 부분
-		ImageIcon icon = new ImageIcon(Constants_GamePanel.BACKGROUND_GAMEPANEL);
 		Dimension d = getSize();
 		g.drawImage(icon.getImage(), 0, 0, d.width, d.height, null);
 		setOpaque(false);// 그림을 표시하게 설정,투명하게 조절
@@ -97,6 +105,7 @@ public class Game_Panel extends JPanel {
 		arrowThread.resume();
 		remove(pause);
 		button.setEnabled(true);
+		icon = icon1;
 	}
 	@SuppressWarnings("deprecation")
 	public void replay() {
@@ -142,7 +151,9 @@ public class Game_Panel extends JPanel {
 		else if(num<440){ current_Panel[1].selectBurger(i, 2); } 
 		else{ current_Panel[1].selectBurger(i, 3); }
 	}
+	@SuppressWarnings("deprecation")
 	public void stopGame(){
+		icon = icon2;
 		arrowThread.suspend();
 		button.setEnabled(false);
 		add(pause);

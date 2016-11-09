@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-
+// 게임 패널들의 다형성을 위한 상위 클래스
 public abstract class Game_Panel_Piece extends JPanel {
 	private static final long serialVersionUID = 1L;
 	ImageIcon icon;

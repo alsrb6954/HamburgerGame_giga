@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import constants.Constants_SelectPanel.*;
 
 
-
+// 선택해야할 재료가 나오는 클래스
 public class Game_Select_Panel extends Game_Panel_Piece {
 	private static final long serialVersionUID = 1L;
 	private ImageIcon image;

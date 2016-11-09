@@ -5,7 +5,7 @@ import javax.swing.JLabel;
 
 import constants.Constants_SelectPanel_Burger.EGameSelectHamburger;
 import hamburger.Material;
-
+// 사용자가 선택해서 만들어질 햄버거
 public class Game_SelectHamburger_Panel extends Game_Panel_Piece {
 	private static final long serialVersionUID = 1L;
 	private JLabel material[];

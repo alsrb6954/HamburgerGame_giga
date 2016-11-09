@@ -5,7 +5,7 @@ import java.awt.Font;
 
 import javax.swing.JLabel;
 
-
+// 레벨을 위한 클래스
 public class Game_LevelTest {
 	private JLabel levelLabel;
 	private int accumulate;// 햄버거가 같은 모양일 경우 맞춘 개수를 누적하는 변수

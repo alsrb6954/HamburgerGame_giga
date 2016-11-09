@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 
 import constants.Constants_RandomPanel.EGameRandomHamburger;
 import hamburger.*;
-
+// 랜덤으로 햄버거가 생성되는 클래스
 public class Game_RandomHamburger_Panel extends Game_Panel_Piece {
 	private static final long serialVersionUID = 1L;
 	private JLabel material;

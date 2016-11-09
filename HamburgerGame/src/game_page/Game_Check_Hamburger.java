@@ -2,7 +2,7 @@ package game_page;
 
 import data_managements.ConfirmQueue;
 import data_managements.ConfirmStack;
-
+// 햄버거가 같은지 비교하는 클래스
 public class Game_Check_Hamburger {
 	private ConfirmStack stack = new ConfirmStack();
 	private ConfirmQueue queue = new ConfirmQueue();
