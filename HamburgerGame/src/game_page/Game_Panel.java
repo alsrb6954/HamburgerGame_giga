@@ -15,29 +15,32 @@ import javax.swing.JPanel;
 
 import constants.Constants_GamePanel;
 import constants.Constants_GamePanel.*;
+import data_managements.Database;
 import data_managements.MaterialQueue;
 import frames.ViewController;
 import thread.*;
 // 메인 게임 패널로 게임을 하는 클래스
 public class Game_Panel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	private int score;
+	private JButton button;
+	private MaterialQueue queue = new MaterialQueue();
+	private ButtonActionListner actionHandler;
 	private Game_Panel_Piece current_Panel[];
 	private Game_Pause_Panel pause;
 	private Game_LevelTest levelLable;
-	private Game_Check_Hamburger checkHamburger = new Game_Check_Hamburger();
-	private MaterialQueue queue = new MaterialQueue();
+	private Game_Check_Hamburger checkHamburger;
 	private Arrow_Panel arrowPanel;
 	private Arrow_Thread arrowThread;
-	private ButtonActionListner actionHandler = new ButtonActionListner();
 	private ViewController viewController;
-	private int score;
-	private JButton button;
 	// 배경을 이미지로 입히고 일시정지했으면 바꾸기 위한 변수등
-	private ImageIcon icon = new ImageIcon(Constants_GamePanel.BACKGROUND_GAMEPANEL); 
-	private Image normalImage = icon.getImage();
-	private Image grayImage = GrayFilter.createDisabledImage(normalImage);
-	private ImageIcon icon2 = new ImageIcon(grayImage);
-	private ImageIcon icon1 = icon;
+	private ImageIcon icon; 
+	private Image normalImage;
+	private Image grayImage;
+	private ImageIcon icon2;
+	private ImageIcon icon1;
+	
+	Database da = new Database();
 	
 	// 게임 메인 패널의 배경 이미지와 점수 부분을 그려주는 메소드
 	public void paintComponent(Graphics g) {
@@ -51,12 +54,20 @@ public class Game_Panel extends JPanel {
 		g.setColor(Color.green);
 		g.drawString("SCORE : " + score, 550, 65);
 	}
-	
 	// 생성자 메소드로 ViewController를 받아서 끝내는 화면이나 재시작 화면을 위한 컨틀로러를 받는다.
 	public Game_Panel(ViewController viewController) {
-		this.viewController = viewController;
 		this.setLayout(null); // 레이아웃을 null로 선언 하면서 자유로운 위치에 만들어지도록 한다.	
+		
+		this.viewController = viewController;
+		actionHandler = new ButtonActionListner();
+		checkHamburger = new Game_Check_Hamburger();
 		for(int i=1; i<=5; i++){ queue.enqueue(i); } // 원형큐로 재료를 순차적으로 넘기기 위해 사용
+		// 배경화면에 사용할 변수들 초기화하는 부분
+		icon = new ImageIcon(Constants_GamePanel.BACKGROUND_GAMEPANEL); 
+		normalImage = icon.getImage();
+		grayImage = GrayFilter.createDisabledImage(normalImage);
+		icon2 = new ImageIcon(grayImage);
+		icon1 = icon;
 		// 레벨 부분
 		levelLable = new Game_LevelTest();
 		levelLable.initialize();
@@ -74,15 +85,13 @@ public class Game_Panel extends JPanel {
 			button.setBounds(eGamePanelButton.getX(), eGamePanelButton.getY(), eGamePanelButton.getW(),
 					eGamePanelButton.getH());
 			this.add(button);
-		}
-		
+		}	
 		// 화살표 만드는 부분
 		arrowPanel = new Arrow_Panel();
 		arrowThread = new Arrow_Thread(arrowPanel);
 		arrowPanel.setBounds(45, 560, 600, 60);
 		add(arrowPanel);
-		arrowThread.start();
-		
+		arrowThread.start();	
 		// 랜덤햄버거 패널, 선택햄버거 패널, 재료 선택 패널
 		int i = 0;
 		pause = new Game_Pause_Panel(viewController);
@@ -95,11 +104,11 @@ public class Game_Panel extends JPanel {
 			i++;
 		}
 	}
-
 	// 게임을 초기 설정 해주는 메소드
 	public void initialize() {	
 		for (int i = 0; i < 3; i++) {current_Panel[i].initialize();}
 	}
+	// 이어가기 버튼 눌렀을 때 호출되는 메소드
 	@SuppressWarnings("deprecation")
 	public void keep() {
 		arrowThread.resume();
@@ -107,6 +116,7 @@ public class Game_Panel extends JPanel {
 		button.setEnabled(true);
 		icon = icon1;
 	}
+	// 새로하기 버튼 눌렀을 때 호출되는 메소드
 	@SuppressWarnings("deprecation")
 	public void replay() {
 		arrowThread.resume();
@@ -137,7 +147,8 @@ public class Game_Panel extends JPanel {
 			}
 			// 버거 모양이 다를경우
 			else if(a == 1){ 
-				viewController.endGamePanel();
+				viewController.endGamePanel(da.scoreSave(score));
+				da.endDatabase();
 			}
 		}
 	}
@@ -151,6 +162,7 @@ public class Game_Panel extends JPanel {
 		else if(num<440){ current_Panel[1].selectBurger(i, 2); } 
 		else{ current_Panel[1].selectBurger(i, 3); }
 	}
+	// 일시정지 버튼을 눌렀을 때 사용되는 메소드
 	@SuppressWarnings("deprecation")
 	public void stopGame(){
 		icon = icon2;
@@ -164,7 +176,6 @@ public class Game_Panel extends JPanel {
 	}
 	private class ButtonActionListner implements ActionListener{
 		int i;
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			// next 눌렀을떄
 			if(e.getActionCommand().equals(EGamePanelButton.values()[1].toString())){

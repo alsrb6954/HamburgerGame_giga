@@ -21,9 +21,8 @@ public class ConfirmQueue {
 	}
 	// 햄버거 비교를 위에 한개씩 빼는 메소드
 	public int dequeue(){
-		try{
-			
-		}catch(NullPointerException e){
+		try{}
+		catch(NullPointerException e){
 			System.out.println("큐가 비어있습니다");
 			System.exit(0);
 		}

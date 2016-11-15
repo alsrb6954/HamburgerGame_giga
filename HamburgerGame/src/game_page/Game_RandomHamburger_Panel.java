@@ -33,6 +33,4 @@ public class Game_RandomHamburger_Panel extends Game_Panel_Piece {
 		Random random = new Random();
 		return random.nextInt(4);
 	}
-	@Override
-	public void selectBurger(int q, int i) {}
 }

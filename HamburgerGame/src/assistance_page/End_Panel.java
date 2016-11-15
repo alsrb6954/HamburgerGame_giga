@@ -12,11 +12,15 @@ public class End_Panel extends Assistance_Panel{
 	private static final long serialVersionUID = 1L;
 	private ViewController viewController;
 	private SelectListener actionHandler = new SelectListener();
-	
+	int score;
 	public void paintComponent(Graphics g) {
 		ImageIcon icon = new ImageIcon("rsc/panelImg/end_Background.gif");
 		Dimension d = getSize();
 		g.drawImage(icon.getImage(), 0, 0, d.width, d.height, null);
+		
+		g.setFont(new Font("Defualt", Font.BOLD, 50));
+		g.setColor(Color.green);
+		g.drawString("MAXSCORE : " + score, 40, 200);
 	}
 	
 	public End_Panel(ViewController viewController){
@@ -37,7 +41,9 @@ public class End_Panel extends Assistance_Panel{
 			this.add(button);
 		}
 	}
-
+	public void gameMaxScore(int score){
+		this.score = score;
+	}
 	@Override
 	public void gameStart() { viewController.showGamePanel(this); }
 	

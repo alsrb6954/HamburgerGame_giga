@@ -25,36 +25,37 @@ public class ViewController {
 	}
 	
 	// 게임화면으로 넘어가기 위해 초기화시켜준다.
+	// 넘어오는 변수가 엔트페이지와 스타트페이지 두개이다
 	public void showGamePanel(Assistance_Panel currentPanel){
 		this.currentPanel = currentPanel;
-		contentPane.remove(currentPanel); //startPanel을 제거한다
+		contentPane.remove(currentPanel); 
 		gamePanel = new Game_Panel(this);
-		contentPane.add(gamePanel); //새로운 gamePanel을 추가한다.
-		gamePanel.initialize(); // 게임패널을 초기화 시켜준다.
-		mainFrame.setVisible(false); //메인프레임을 보이지 않게한 후 
-		mainFrame.setVisible(true); //다시 보이게 한다.
+		contentPane.add(gamePanel); 
+		gamePanel.initialize(); 
+		show();
 	}
 	// 엔드화면으로 넘어가는 메소드
-	public void endGamePanel(){
+	public void endGamePanel(int score){
 		currentPanel = new End_Panel(this);
-		contentPane.remove(gamePanel); //gamePanel을 제거한다
-		contentPane.add(currentPanel); //새로운 gameEndPanel을 추가한다.
-		mainFrame.setVisible(false); //메인프레임을 보이지 않게한 후 
-		mainFrame.setVisible(true); //다시 보이게 한다.
+		currentPanel.gameMaxScore(score);
+		contentPane.remove(gamePanel); 
+		contentPane.add(currentPanel); 
+		show();
 	}
+	// 이어하기 누를때 화면을 이어가기 위한 메소드
 	public void keepGamePanel(){
-		contentPane.remove(gamePanel); //gamePanel을 제거한다
-		contentPane.add(gamePanel); //새로운 gameEndPanel을 추가한다.
+		contentPane.remove(gamePanel); 
+		contentPane.add(gamePanel); 
 		gamePanel.keep();
 		show();
 	}
-	
+	// 새로하기 누를 때 화면을 새로하기 위한 메소드
 	public void replayGamePanel(){
 		gamePanel.replay();
-		contentPane.remove(gamePanel); //startPanel을 제거한다
+		contentPane.remove(gamePanel); 
 		gamePanel = new Game_Panel(this);
-		contentPane.add(gamePanel); //새로운 gamePanel을 추가한다.
-		gamePanel.initialize(); // 게임패널을 초기화 시켜준다.
+		contentPane.add(gamePanel); 
+		gamePanel.initialize();
 		show();
 	}
 	public void show(){

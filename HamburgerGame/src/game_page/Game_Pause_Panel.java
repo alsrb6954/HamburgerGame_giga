@@ -15,8 +15,8 @@ public class Game_Pause_Panel extends JPanel{
 	private SelectListener actionHandler = new SelectListener();
 	public Game_Pause_Panel(ViewController viewController){
 		this.viewController = viewController;
-		setBounds(Constants_PausePanel.X, Constants_PausePanel.Y, Constants_PausePanel.WIDTH, Constants_PausePanel.HIEGHT);
 		setLayout(null);
+		setBounds(Constants_PausePanel.X, Constants_PausePanel.Y, Constants_PausePanel.WIDTH, Constants_PausePanel.HIEGHT);
 		
 		for(EGamePauseButton eGamePauseButton: EGamePauseButton.values()){
 			ImageIcon img = new ImageIcon(eGamePauseButton.getButtonImg());

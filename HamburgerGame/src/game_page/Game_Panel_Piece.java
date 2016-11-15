@@ -24,5 +24,5 @@ public abstract class Game_Panel_Piece extends JPanel {
 	}
 	// 추상 메소드로 초기화와 선택버거의 추상화 메소드
 	abstract public void initialize();
-	abstract public void selectBurger(int q, int i);
+	public void selectBurger(int q, int i){}
 }
