@@ -27,7 +27,7 @@ public class Constants {
 		public int getValue() { return this.value; }
 		public String getBackgroundName() { return this.backgroundName; }
 	}
-
+	// 종료 페이지의 버튼의 이미지와 좌표를 설정하는 enum 타입
 	public static enum EEndPanelButton {
 		Replay("rsc/panelImg/Replay.gif","rsc/panelImg/Replay_push.gif",100, 500, 200, 85), 
 		Quit("rsc/panelImg/Quit.gif","rsc/panelImg/Quit_push.gif",400, 500, 200, 85);

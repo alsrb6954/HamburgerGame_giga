@@ -11,7 +11,7 @@ public class BottomBread extends Material {
 	private ImageIcon image;
 
 	@Override
-	public void initMaterial(int i, int n) {
+	public void initMaterial(int i) {
 		image = new ImageIcon(EBottomBread.bottomBread.getImg());
 		bottomBread = new JLabel(image);
 		bottomBread.setBounds(ERandomLocation.bottomBread.getX(), ERandomLocation.bottomBread.getY(),
@@ -19,7 +19,5 @@ public class BottomBread extends Material {
 	}
 
 	@Override
-	public JLabel getMaterial() {
-		return bottomBread;
-	}
+	public JLabel getMaterial() { return bottomBread; }
 }

@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import constants.Constants_GamePanel;
 import constants.Constants_GamePanel.*;
+import data_managements.ConfirmStack;
 import data_managements.Database;
 import data_managements.MaterialQueue;
 import frames.ViewController;
@@ -29,10 +30,10 @@ public class Game_Panel extends JPanel {
 	private Game_Panel_Piece current_Panel[];
 	private Game_Pause_Panel pause;
 	private Game_LevelTest levelLable;
-	private Game_Check_Hamburger checkHamburger;
 	private Arrow_Panel arrowPanel;
 	private Arrow_Thread arrowThread;
 	private ViewController viewController;
+	private ConfirmStack stack;
 	// 배경을 이미지로 입히고 일시정지했으면 바꾸기 위한 변수등
 	private ImageIcon icon; 
 	private Image normalImage;
@@ -53,14 +54,21 @@ public class Game_Panel extends JPanel {
 		g.setFont(new Font("Defualt", Font.BOLD, 25));
 		g.setColor(Color.green);
 		g.drawString("SCORE : " + score, 550, 65);
+		g.setFont(new Font("Defualt", Font.BOLD, 50));
+		g.setColor(Color.black);
+		if(da.getMax()>score){
+			g.drawString("MAX : " + da.getMax(), 10, 680);
+		} else{
+			g.drawString("MAX : " + score, 10, 680);
+		}
 	}
 	// 생성자 메소드로 ViewController를 받아서 끝내는 화면이나 재시작 화면을 위한 컨틀로러를 받는다.
 	public Game_Panel(ViewController viewController) {
 		this.setLayout(null); // 레이아웃을 null로 선언 하면서 자유로운 위치에 만들어지도록 한다.	
 		
 		this.viewController = viewController;
+		stack = new ConfirmStack();
 		actionHandler = new ButtonActionListner();
-		checkHamburger = new Game_Check_Hamburger();
 		for(int i=1; i<=5; i++){ queue.enqueue(i); } // 원형큐로 재료를 순차적으로 넘기기 위해 사용
 		// 배경화면에 사용할 변수들 초기화하는 부분
 		icon = new ImageIcon(Constants_GamePanel.BACKGROUND_GAMEPANEL); 
@@ -120,35 +128,27 @@ public class Game_Panel extends JPanel {
 	@SuppressWarnings("deprecation")
 	public void replay() {
 		arrowThread.resume();
-		checkHamburger.initialize();
+		stack.initialize();
 		button.setEnabled(true);
 	}
+
 	// 다음 재료로 넘기는 메소드
 	@SuppressWarnings("deprecation")
 	public void nextMaterial(int i){
 		arrowThread.resume();
 		current_Panel[2].selectBurger(i, 0);
 		if(i == 5){
-			int a = checkHamburger.check();
-			// 버거 모양이 같을 경우 점수를 올리고, 새롭게 햄버거 생성
-			if(a == 0){ 
-				initialize(); 
-				levelLable.levelTest();
-				if(levelLable.getAccumulate() < 6){ score += 1; }
-				else if(levelLable.getAccumulate() < 16){ score += 3; } 
-				else if(levelLable.getAccumulate() < 26){ score += 6; } 
-				else if(levelLable.getAccumulate() < 41){ score += 10; } 
-				else if(levelLable.getAccumulate() > 40){ score += 15; }
-				
-				if (levelLable.getAccumulate() == 5 || levelLable.getAccumulate() == 15
-						|| levelLable.getAccumulate() == 25 || levelLable.getAccumulate() == 40) {
-					arrowThread.setSpeed();
-				}
-			}
-			// 버거 모양이 다를경우
-			else if(a == 1){ 
-				viewController.endGamePanel(da.scoreSave(score));
-				da.endDatabase();
+			initialize(); 
+			levelLable.levelTest();
+			if(levelLable.getAccumulate() < 6){ score += 1; }
+			else if(levelLable.getAccumulate() < 16){ score += 3; } 
+			else if(levelLable.getAccumulate() < 26){ score += 6; } 
+			else if(levelLable.getAccumulate() < 41){ score += 10; } 
+			else if(levelLable.getAccumulate() > 40){ score += 15; }
+			
+			if (levelLable.getAccumulate() == 5 || levelLable.getAccumulate() == 15
+					|| levelLable.getAccumulate() == 25 || levelLable.getAccumulate() == 40) {
+				arrowThread.setSpeed();
 			}
 		}
 	}
@@ -156,11 +156,20 @@ public class Game_Panel extends JPanel {
 	@SuppressWarnings("deprecation")
 	public void toSelecedMaterial(int i){
 		arrowThread.suspend();
+		int selectNum;
 		int num = arrowPanel.getAX();
-		if(num<110){ current_Panel[1].selectBurger(i, 0); }
-		else if(num<310){ current_Panel[1].selectBurger(i, 1); }
-		else if(num<440){ current_Panel[1].selectBurger(i, 2); } 
-		else{ current_Panel[1].selectBurger(i, 3); }
+		if(num<110){ selectNum = 0; }
+		else if(num<310){ selectNum = 1; }
+		else if(num<440){ selectNum = 2; } 
+		else{ selectNum = 3; }
+		if(stack.pop() != selectNum){
+			try { Thread.sleep(200); } 
+			catch (InterruptedException e1) { e1.printStackTrace(); }
+			stack.initialize();
+			viewController.endGamePanel(da.scoreSave(score));
+			da.endDatabase();
+		}
+		current_Panel[1].selectBurger(i, selectNum);
 	}
 	// 일시정지 버튼을 눌렀을 때 사용되는 메소드
 	@SuppressWarnings("deprecation")
@@ -185,7 +194,9 @@ public class Game_Panel extends JPanel {
 				catch (InterruptedException e1) { e1.printStackTrace(); }
 				nextMaterial(i);
 				queue.enqueue(i);
-			} else if (e.getActionCommand().equals(EGamePanelButton.values()[0].toString())){
+			} 
+			// stop 눌렀을때
+			else if (e.getActionCommand().equals(EGamePanelButton.values()[0].toString())){
 				stopGame();
 			}
 			repaint();

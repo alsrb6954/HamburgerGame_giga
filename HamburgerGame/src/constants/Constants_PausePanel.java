@@ -5,6 +5,7 @@ public class Constants_PausePanel {
 	public final static int Y = 50;
 	public final static int WIDTH = 600;
 	public final static int HIEGHT = 500;
+	// 게임 일시정지 할때 버튼들의 좌표와 이미지 enum 타입
 	public static enum EGamePauseButton {
 		replay("rsc/panelImg/Greplay.gif","rsc/panelImg/Greplay_push.gif",140,300,100,100),
 		keep("rsc/panelImg/Gkeep.gif","rsc/panelImg/Gkeep_push.gif",250,300,100,100),

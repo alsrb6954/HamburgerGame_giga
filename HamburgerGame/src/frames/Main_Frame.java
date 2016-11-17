@@ -8,7 +8,7 @@ import constants.Constants.EMainFrame;
 
 public class Main_Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	ViewController viewController;
+	private ViewController viewController;
 	
 	public Main_Frame(){
 		this.setTitle(Constants.MAINFRAME_TITLE);

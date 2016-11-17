@@ -23,9 +23,10 @@ public class Start_Panel extends Assistance_Panel {
 		background_Image = Toolkit.getDefaultToolkit().getImage(EStartPanel.background.getBackgroundName());
 		this.addKeyListener(new IntroKeyEvent());
 	}
-
+	// 게임을 시작하는 메소드
 	public void gameStart() { viewController.showGamePanel(this); }
 
+	// 시작화면에 화살표와 배경을 그려주는 페이트 메소드
 	@Override
 	public void paint(Graphics g) {
 		g.drawImage(background_Image, EStartPanel.X.getValue(), EStartPanel.Y.getValue(), 

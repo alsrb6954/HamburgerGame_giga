@@ -4,7 +4,7 @@ public class MaterialQueue {
 	final int ArraySize = 6;
 	private int front = 0, rear = 0;
 	private int[] arr = new int[ArraySize];
-    
+    // 원형 큐를 넣어주는 곳
     public void enqueue(int data){
     	try{
 	        if((rear + 1) % ArraySize ==  front % ArraySize) {
@@ -18,7 +18,7 @@ public class MaterialQueue {
 			System.exit(0);
     	}
     }
-    
+    // 원형큐를 빼주는 곳
     public int dequeue(){
     	try{
 	        if(front == rear){

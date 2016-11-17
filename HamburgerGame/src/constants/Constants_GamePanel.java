@@ -9,6 +9,7 @@ import game_page.Game_Select_Panel;
 
 public class Constants_GamePanel {
 	public final static String BACKGROUND_GAMEPANEL = "rsc/panelImg/버거쿡배경-1.gif";
+	// 게임 패널들의 좌표와 이미지를 저장하는 enum타입
 	public static enum EGamePanelPiece {
 		randomHamburger(new Game_RandomHamburger_Panel(new ImageIcon("rsc/panelImg/버거쿡배경-3.gif")), 10, 155, 340, 300),
 		selectHamburger(new Game_SelectHamburger_Panel(new ImageIcon("rsc/panelImg/버거쿡배경-3.gif")), 355, 155, 340, 300),
@@ -31,7 +32,7 @@ public class Constants_GamePanel {
 		public int getW() { return this.w; }
 		public int getH() { return this.h; }
 	}
-	
+	// 게임 버튼들의 좌표와 이미지의 enum타입
 	public static enum EGamePanelButton {
 		stop("rsc/panelImg/Stop.gif","rsc/panelImg/Stop_push.gif",10, 10, 50, 50),
 		next("rsc/panelImg/Next.gif","rsc/panelImg/Next_push.gif",300, 640, 100, 50);

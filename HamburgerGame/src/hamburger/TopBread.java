@@ -5,17 +5,13 @@ import javax.swing.JLabel;
 
 import constants.Constants_buger.ERandomLocation;
 import constants.Constants_buger.ETopBread;
-import data_managements.ConfirmQueue;
-import data_managements.ConfirmStack;
 
 public class TopBread extends Material {
 	private JLabel topBread;
 	private ImageIcon image;
-	private ConfirmStack stack = new ConfirmStack();
-	private ConfirmQueue queue = new ConfirmQueue();
 
 	@Override
-	public void initMaterial(int i, int n) {
+	public void initMaterial(int i) {
 		ETopBread[] eTopBread = ETopBread.values();
 		for (int j = 0; j <= i; j++) {
 			image = new ImageIcon(eTopBread[j].getImg());
@@ -23,18 +19,7 @@ public class TopBread extends Material {
 		}
 		topBread.setBounds(ERandomLocation.topBread.getX(), ERandomLocation.topBread.getY(), image.getIconWidth(),
 				image.getIconHeight());
-		switch (n) {
-		case 0:stack.push(i);
-			break;
-		case 1:queue.enqueue(i);
-			break;
-		default:
-			break;
-		}
 	}
-
-	public JLabel getMaterial() {
-		return topBread;
-	}
+	public JLabel getMaterial() { return topBread; }
 
 }

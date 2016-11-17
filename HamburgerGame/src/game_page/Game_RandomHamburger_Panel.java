@@ -6,25 +6,31 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import constants.Constants_RandomPanel.EGameRandomHamburger;
+import constants.Constants_Hamburger.EGameHamburger;
 import hamburger.*;
 // 랜덤으로 햄버거가 생성되는 클래스
 public class Game_RandomHamburger_Panel extends Game_Panel_Piece {
 	private static final long serialVersionUID = 1L;
 	private JLabel material;
 	private Material currentMaterial;
-
+	private int randomNum;
 	public Game_RandomHamburger_Panel(ImageIcon icon){
 		super(icon);
 	}
 	// 이전의 그려있는것이 있으면 지우고 다시 그려준다.
 	public void initialize() {
+		int a = 0;
 		this.removeAll();
-		for(EGameRandomHamburger eGameRandomHamburger : EGameRandomHamburger.values()){
+		for(EGameHamburger eGameRandomHamburger : EGameHamburger.values()){
+			randomNum = randomProduct();
 			currentMaterial = eGameRandomHamburger.getMaterial();
-			currentMaterial.initMaterial(randomProduct(), 0);
+			currentMaterial.initMaterial(randomNum);
+			if(a<5){
+				currentMaterial.stackPush(randomNum);
+			}
 			material = currentMaterial.getMaterial();
 			this.add(material);
+			a++;
 		}
 	}
 

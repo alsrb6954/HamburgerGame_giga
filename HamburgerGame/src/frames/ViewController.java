@@ -58,6 +58,7 @@ public class ViewController {
 		gamePanel.initialize();
 		show();
 	}
+	// 화면을 껏다가 다시 켜서 보이게 하는 메소드
 	public void show(){
 		mainFrame.setVisible(false); //메인프레임을 보이지 않게한 후 
 		mainFrame.setVisible(true); //다시 보이게 한다.

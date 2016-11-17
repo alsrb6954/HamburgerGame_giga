@@ -12,7 +12,8 @@ public class End_Panel extends Assistance_Panel{
 	private static final long serialVersionUID = 1L;
 	private ViewController viewController;
 	private SelectListener actionHandler = new SelectListener();
-	int score;
+	private int score;
+	// 배경을 그려주고 최대점수를 적어주는 페이트 메소드
 	public void paintComponent(Graphics g) {
 		ImageIcon icon = new ImageIcon("rsc/panelImg/end_Background.gif");
 		Dimension d = getSize();
@@ -41,9 +42,11 @@ public class End_Panel extends Assistance_Panel{
 			this.add(button);
 		}
 	}
+	// 최대 점수가 들어 오면 점수를 저장해준다.
 	public void gameMaxScore(int score){
 		this.score = score;
 	}
+	// 게임을 시작하는 메소드
 	@Override
 	public void gameStart() { viewController.showGamePanel(this); }
 	
