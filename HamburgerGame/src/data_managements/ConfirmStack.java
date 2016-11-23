@@ -2,7 +2,7 @@
 package data_managements;
 
 public class ConfirmStack {
-	private static int[] random = new int[5]; // ·£´ı ÇÜ¹ö°Å ½ºÅÃ
+	private static int[] random = new int[7]; // ·£´ı ÇÜ¹ö°Å ½ºÅÃ
 	private static int randomTop = 0;
 
 	public void initialize() {

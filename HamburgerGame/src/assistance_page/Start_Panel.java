@@ -22,6 +22,7 @@ public class Start_Panel extends Assistance_Panel {
 		this.viewController = viewController;
 		background_Image = Toolkit.getDefaultToolkit().getImage(EStartPanel.background.getBackgroundName());
 		this.addKeyListener(new IntroKeyEvent());
+		ViewController.startSound("rsc/sound/start.wav");
 	}
 	// 게임을 시작하는 메소드
 	public void gameStart() { viewController.showGamePanel(this); }
@@ -38,6 +39,7 @@ public class Start_Panel extends Assistance_Panel {
 		else // 아닐경우
 			g.drawString("↑", EStartPanel.drawX1.getValue(), EStartPanel.drawY1.getValue());
 	}
+	
 
 	private class IntroKeyEvent implements KeyListener {
 		@Override

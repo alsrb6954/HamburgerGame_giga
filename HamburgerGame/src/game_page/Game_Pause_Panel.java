@@ -38,6 +38,7 @@ public class Game_Pause_Panel extends JPanel{
 
 	private class SelectListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			ViewController.clickSound();
 			// 재시작을 눌렀을 때 다시 게임 시작
 			if (e.getActionCommand().equals(EGamePauseButton.values()[0].toString())) {
 				viewController.replayGamePanel();

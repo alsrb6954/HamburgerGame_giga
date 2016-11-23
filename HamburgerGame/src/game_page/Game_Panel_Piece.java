@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 // 게임 패널들의 다형성을 위한 상위 클래스
 public abstract class Game_Panel_Piece extends JPanel {
 	private static final long serialVersionUID = 1L;
-	ImageIcon icon;
+	private ImageIcon icon;
 	// 생성자 메소드로 자식 클래스한테 배경 이미지를 받는다.
 	public Game_Panel_Piece(ImageIcon icon){
 		this.icon = icon;
@@ -24,5 +24,6 @@ public abstract class Game_Panel_Piece extends JPanel {
 	}
 	// 추상 메소드로 초기화와 선택버거의 추상화 메소드
 	abstract public void initialize();
-	public void selectBurger(int q, int i){}
+	public void selectBurger(int q, int i, int n){}
+	public int getNum() { return 0; }
 }

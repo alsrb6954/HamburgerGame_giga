@@ -25,7 +25,7 @@ public class Game_Panel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private int score;
 	private JButton button;
-	private MaterialQueue queue = new MaterialQueue();
+	private MaterialQueue queueFive,queueSix,queueSeven;
 	private ButtonActionListner actionHandler;
 	private Game_Panel_Piece current_Panel[];
 	private Game_Pause_Panel pause;
@@ -34,6 +34,7 @@ public class Game_Panel extends JPanel {
 	private Arrow_Thread arrowThread;
 	private ViewController viewController;
 	private ConfirmStack stack;
+	private int num;
 	// 배경을 이미지로 입히고 일시정지했으면 바꾸기 위한 변수등
 	private ImageIcon icon; 
 	private Image normalImage;
@@ -65,11 +66,18 @@ public class Game_Panel extends JPanel {
 	// 생성자 메소드로 ViewController를 받아서 끝내는 화면이나 재시작 화면을 위한 컨틀로러를 받는다.
 	public Game_Panel(ViewController viewController) {
 		this.setLayout(null); // 레이아웃을 null로 선언 하면서 자유로운 위치에 만들어지도록 한다.	
-		
-		this.viewController = viewController;
-		stack = new ConfirmStack();
+
 		actionHandler = new ButtonActionListner();
-		for(int i=1; i<=5; i++){ queue.enqueue(i); } // 원형큐로 재료를 순차적으로 넘기기 위해 사용
+		this.viewController = viewController;
+		ViewController.startSound("rsc/sound/game.wav");
+		queueFive = new MaterialQueue(6);
+		queueSix = new MaterialQueue(7);
+		queueSeven = new MaterialQueue(8);
+		for(int i=1; i<=5; i++){ queueFive.enqueue(i); } // 원형큐로 재료를 순차적으로 넘기기 위해 사용
+		for(int i=1; i<=6; i++){ queueSix.enqueue(i); } // 원형큐로 재료를 순차적으로 넘기기 위해 사용
+		for(int i=1; i<=7; i++){ queueSeven.enqueue(i); } // 원형큐로 재료를 순차적으로 넘기기 위해 사용
+		stack = new ConfirmStack();
+		stack.initialize();
 		// 배경화면에 사용할 변수들 초기화하는 부분
 		icon = new ImageIcon(Constants_GamePanel.BACKGROUND_GAMEPANEL); 
 		normalImage = icon.getImage();
@@ -111,14 +119,17 @@ public class Game_Panel extends JPanel {
 			this.add(current_Panel[i]);
 			i++;
 		}
+		this.num = current_Panel[0].getNum();
 	}
 	// 게임을 초기 설정 해주는 메소드
 	public void initialize() {	
 		for (int i = 0; i < 3; i++) {current_Panel[i].initialize();}
+		this.num = current_Panel[0].getNum();
 	}
 	// 이어가기 버튼 눌렀을 때 호출되는 메소드
 	@SuppressWarnings("deprecation")
 	public void keep() {
+		ViewController.startSound("rsc/sound/game.wav");
 		arrowThread.resume();
 		remove(pause);
 		button.setEnabled(true);
@@ -128,33 +139,39 @@ public class Game_Panel extends JPanel {
 	@SuppressWarnings("deprecation")
 	public void replay() {
 		arrowThread.resume();
-		stack.initialize();
 		button.setEnabled(true);
 	}
 
 	// 다음 재료로 넘기는 메소드
 	@SuppressWarnings("deprecation")
-	public void nextMaterial(int i){
+	public void nextMaterial(int q){
 		arrowThread.resume();
-		current_Panel[2].selectBurger(i, 0);
-		if(i == 5){
-			initialize(); 
-			levelLable.levelTest();
-			if(levelLable.getAccumulate() < 6){ score += 1; }
-			else if(levelLable.getAccumulate() < 16){ score += 3; } 
-			else if(levelLable.getAccumulate() < 26){ score += 6; } 
-			else if(levelLable.getAccumulate() < 41){ score += 10; } 
-			else if(levelLable.getAccumulate() > 40){ score += 15; }
-			
-			if (levelLable.getAccumulate() == 5 || levelLable.getAccumulate() == 15
-					|| levelLable.getAccumulate() == 25 || levelLable.getAccumulate() == 40) {
-				arrowThread.setSpeed();
-			}
+		current_Panel[2].selectBurger(q, 0, this.num);
+		if(q == 5 && this.num == 0){
+			scoreUP();
+		} else if(q == 6 && this.num == 1){
+			scoreUP();
+		} else if(q == 7 && this.num == 2){
+			scoreUP();
 		}
+	}
+	public void scoreUP(){
+		levelLable.levelTest();
+		if(levelLable.getAccumulate() < 6){ score += (1 + this.num); }
+		else if(levelLable.getAccumulate() < 16){ score += (3 + this.num); } 
+		else if(levelLable.getAccumulate() < 26){ score += (6 + this.num); } 
+		else if(levelLable.getAccumulate() < 41){ score += (10 + this.num); } 
+		else if(levelLable.getAccumulate() > 40){ score += (15 + this.num); }
+		
+		if (levelLable.getAccumulate() == 5 || levelLable.getAccumulate() == 15
+				|| levelLable.getAccumulate() == 25 || levelLable.getAccumulate() == 40) {
+			arrowThread.setSpeed();
+		}
+		initialize(); 
 	}
 	// 선택된 재료가 무엇인지 판단하는 메소드
 	@SuppressWarnings("deprecation")
-	public void toSelecedMaterial(int i){
+	public void toSelecedMaterial(int q){
 		arrowThread.suspend();
 		int selectNum;
 		int num = arrowPanel.getAX();
@@ -162,18 +179,19 @@ public class Game_Panel extends JPanel {
 		else if(num<310){ selectNum = 1; }
 		else if(num<440){ selectNum = 2; } 
 		else{ selectNum = 3; }
+		//  재료가 하나가 틀리면 게임 오버하게 하는 곳
 		if(stack.pop() != selectNum){
 			try { Thread.sleep(200); } 
 			catch (InterruptedException e1) { e1.printStackTrace(); }
-			stack.initialize();
 			viewController.endGamePanel(da.scoreSave(score));
 			da.endDatabase();
 		}
-		current_Panel[1].selectBurger(i, selectNum);
+		current_Panel[1].selectBurger(q, selectNum, this.num);
 	}
 	// 일시정지 버튼을 눌렀을 때 사용되는 메소드
 	@SuppressWarnings("deprecation")
 	public void stopGame(){
+		ViewController.stopSound();
 		icon = icon2;
 		arrowThread.suspend();
 		button.setEnabled(false);
@@ -183,20 +201,44 @@ public class Game_Panel extends JPanel {
 		add(current_Panel[1]);
 		add(current_Panel[2]);
 	}
+	// 버거 층수마다 원형큐를 다른걸 꺼낸다.
+	public int dequeue(){
+		switch (this.num) {
+		case 0: return queueFive.dequeue();
+		case 1: return queueSix.dequeue();	
+		case 2: return queueSeven.dequeue();
+		default: break;
+		}
+		return num;
+	}
+	// 버거 층수마다 원형큐를 다른걸 집어넣어준다.
+	public void enqueue(int i){
+		switch (this.num) {
+		case 0: queueFive.enqueue(i);
+		break;
+		case 1: queueSix.enqueue(i);	
+		break;
+		case 2: queueSeven.enqueue(i);
+		break;
+		default: break;
+		}
+	}
 	private class ButtonActionListner implements ActionListener{
-		int i;
+		int q;
 		public void actionPerformed(ActionEvent e) {
 			// next 눌렀을떄
 			if(e.getActionCommand().equals(EGamePanelButton.values()[1].toString())){
-				i = queue.dequeue();
-				toSelecedMaterial(i);
+				ViewController.clickSound();
+				q = dequeue();
+				toSelecedMaterial(q);
 				try { Thread.sleep(200); } 
 				catch (InterruptedException e1) { e1.printStackTrace(); }
-				nextMaterial(i);
-				queue.enqueue(i);
+				enqueue(q);
+				nextMaterial(q);
 			} 
 			// stop 눌렀을때
 			else if (e.getActionCommand().equals(EGamePanelButton.values()[0].toString())){
+				ViewController.clickSound();
 				stopGame();
 			}
 			repaint();

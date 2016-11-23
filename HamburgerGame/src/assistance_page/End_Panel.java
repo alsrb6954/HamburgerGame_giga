@@ -2,6 +2,7 @@ package assistance_page;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 import constants.Constants.EEndPanelButton;
@@ -27,6 +28,7 @@ public class End_Panel extends Assistance_Panel{
 	public End_Panel(ViewController viewController){
 		this.viewController = viewController;
 		setLayout(null);
+		ViewController.startSound("rsc/sound/end.wav");
 		
 		for(EEndPanelButton eEndPanelButton: EEndPanelButton.values()){
 			ImageIcon img = new ImageIcon(eEndPanelButton.getButtonImg());
@@ -50,13 +52,17 @@ public class End_Panel extends Assistance_Panel{
 	@Override
 	public void gameStart() { viewController.showGamePanel(this); }
 	
-	private class SelectListener implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{	// 다시를 눌렀을 때 다시 게임 시작
-			if(e.getActionCommand().equals("Replay")){ gameStart(); }
+	private class SelectListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			ViewController.clickSound();
+			// 다시를 눌렀을 때 다시 게임 시작
+			if (e.getActionCommand().equals("Replay")) {
+				gameStart();
+			}
 			// 끝을 눌렀을 때 시스템 종료
-			if(e.getActionCommand().equals("Quit")){ System.exit(0); }
+			else if (e.getActionCommand().equals("Quit")) {
+				System.exit(0);
+			}
 		}
 	}
 

@@ -23,4 +23,33 @@ public class Constants_Hamburger {
 		}
 		public Material getMaterial() { return this.material; }
 	}
+	public static enum EGameHamburgerSix {
+		drink(new Drink()),
+		topBread(new TopBread()),
+		patty2(new Patty()),
+		topping(new Topping()),
+		patty1(new Patty()),
+		vegetable(new Vegetable()),
+		bottomBread(new BottomBread());
+		private Material material;
+		private EGameHamburgerSix(Material material){
+			this.material = material;
+		}
+		public Material getMaterial() { return this.material; }
+	}
+	public static enum EGameHamburgerSeven {
+		drink(new Drink()),
+		topBread(new TopBread()),
+		vegetable1(new Vegetable()),
+		patty1(new Patty()),
+		topping(new Topping()),
+		patty2(new Patty()),
+		vegetable2(new Vegetable()),
+		bottomBread(new BottomBread());
+		private Material material;
+		private EGameHamburgerSeven(Material material){
+			this.material = material;
+		}
+		public Material getMaterial() { return this.material; }
+	}
 }

@@ -77,15 +77,38 @@ public class Constants_buger {
 			public String getImg() { return this.img; }
 		}
 		// 햄버거 좌표 위치 enum 상수 타입
-		public static enum ERandomLocation {
-			vegetable(0,150),patty(35,150),topping(0,120),topBread(0,90),drink(240,150),bottomBread(5, 150);
+		public static enum EFiveRandomLocation {
+			vegetable(0,150),patty(35,150),topping(0,122),topBread(0,90),drink(240,150),bottomBread(5, 150);
 			private int x;
 			private int y;
-			private ERandomLocation(int x, int y){
+			private EFiveRandomLocation(int x, int y){
+				this.x = x;
+				this.y = y;
+			}
+			public int getX() { return this.x; }
+			public int getY() { return this.y; }
+		}
+		public static enum ESixRandomLocation {
+			vegetable(0,150),patty1(35,115),topBread(0,70),patty2(35,150);
+			private int x;
+			private int y;
+			private ESixRandomLocation(int x, int y){
 				this.x = x;
 				this.y = y;
 			}
 			public int getX() { return this.x; }
 			public int getY() { return this.y; }
 		} 
+		public static enum ESevenRandomLocation {
+			vegetable1(0,80),patty1(35,115),topBread(0,60),patty2(35,150),vegetable2(0,150);
+			private int x;
+			private int y;
+			private ESevenRandomLocation(int x, int y){
+				this.x = x;
+				this.y = y;
+			}
+			public int getX() { return this.x; }
+			public int getY() { return this.y; }
+		} 
+		
 }
