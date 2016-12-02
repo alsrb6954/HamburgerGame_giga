@@ -23,16 +23,17 @@ import thread.*;
 // 메인 게임 패널로 게임을 하는 클래스
 public class Game_Panel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private int score;
+	private static int score;
 	private JButton button;
 	private MaterialQueue queueFive,queueSix,queueSeven;
 	private ButtonActionListner actionHandler;
 	private Game_Panel_Piece current_Panel[];
 	private Game_Pause_Panel pause;
 	private Game_LevelTest levelLable;
+	private Game_Timer timerLabel;
 	private Arrow_Panel arrowPanel;
 	private Arrow_Thread arrowThread;
-	private ViewController viewController;
+	private static ViewController viewController;
 	private ConfirmStack stack;
 	private int num;
 	// 배경을 이미지로 입히고 일시정지했으면 바꾸기 위한 변수등
@@ -42,7 +43,7 @@ public class Game_Panel extends JPanel {
 	private ImageIcon icon2;
 	private ImageIcon icon1;
 	
-	Database da = new Database();
+	static Database da = new Database();
 	
 	// 게임 메인 패널의 배경 이미지와 점수 부분을 그려주는 메소드
 	public void paintComponent(Graphics g) {
@@ -67,8 +68,9 @@ public class Game_Panel extends JPanel {
 	public Game_Panel(ViewController viewController) {
 		this.setLayout(null); // 레이아웃을 null로 선언 하면서 자유로운 위치에 만들어지도록 한다.	
 
+		score = 0;
 		actionHandler = new ButtonActionListner();
-		this.viewController = viewController;
+		Game_Panel.viewController = viewController;
 		ViewController.startSound("rsc/sound/game.wav");
 		queueFive = new MaterialQueue(6);
 		queueSix = new MaterialQueue(7);
@@ -120,25 +122,28 @@ public class Game_Panel extends JPanel {
 			i++;
 		}
 		this.num = current_Panel[0].getNum();
+		timerLabel = new Game_Timer();
+		this.add(timerLabel.getTimer());
+		timerLabel.start();
 	}
 	// 게임을 초기 설정 해주는 메소드
 	public void initialize() {	
 		for (int i = 0; i < 3; i++) {current_Panel[i].initialize();}
 		this.num = current_Panel[0].getNum();
+		timerLabel.initialize();
 	}
 	// 이어가기 버튼 눌렀을 때 호출되는 메소드
 	@SuppressWarnings("deprecation")
 	public void keep() {
 		ViewController.startSound("rsc/sound/game.wav");
 		arrowThread.resume();
+		timerLabel.resume();
 		remove(pause);
 		button.setEnabled(true);
 		icon = icon1;
 	}
 	// 새로하기 버튼 눌렀을 때 호출되는 메소드
-	@SuppressWarnings("deprecation")
 	public void replay() {
-		arrowThread.resume();
 		button.setEnabled(true);
 	}
 
@@ -188,12 +193,19 @@ public class Game_Panel extends JPanel {
 		}
 		current_Panel[1].selectBurger(q, selectNum, this.num);
 	}
+	public static void gameOver(){
+		try { Thread.sleep(200); } 
+		catch (InterruptedException e1) { e1.printStackTrace(); }
+		viewController.endGamePanel(da.scoreSave(score));
+		da.endDatabase();
+	}
 	// 일시정지 버튼을 눌렀을 때 사용되는 메소드
 	@SuppressWarnings("deprecation")
 	public void stopGame(){
 		ViewController.stopSound();
 		icon = icon2;
 		arrowThread.suspend();
+		timerLabel.suspend();
 		button.setEnabled(false);
 		add(pause);
 		add(arrowPanel);
